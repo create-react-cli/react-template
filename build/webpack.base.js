@@ -1,9 +1,11 @@
 const path = require('path');
+const webpack = require('webpack');
 const merge = require('webpack-merge');
 const dev = require('./webpack.dev');
 const prod = require('./webpack.prod');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -17,15 +19,15 @@ const base = {
         }, {
             test: /\.css$/,
             use: [
-                !isDev && MiniCssExtractPlugin.loader,       // 样式抽离
-                isDev && 'style-loader', 
+                !isDev && MiniCssExtractPlugin.loader, // 样式抽离
+                isDev && 'style-loader',
                 {
-                    loader:'css-loader',
+                    loader: 'css-loader',
                     options: {
-                        importLoaders: 1                     // 引入的文件调用后面的loader处理
+                        importLoaders: 1 // 引入的文件调用后面的loader处理
                     }
                 },
-                "postcss-loader",                            // 样式前缀
+                "postcss-loader", // 样式前缀
             ].filter(Boolean)
         }, {
             test: /\.scss$/,
@@ -43,20 +45,24 @@ const base = {
             use: "stylus-loader",
         }, {
             test: /\.(jpe?g|png|svg|gif)$/,
-            use: {
-                loader: "file-loader",
-            }
+            loader: "file-loader",
+            options: {
+                name: "image/[contentHash].[ext]"
+            },
         }, {
-            test: /\.(woff|ttf|eot|otf)$/,
-            use: "file-loader"
+            test: /\.(woff|ttf|eot|otf|ico)$/,
+            loader: "file-loader",
+            options: {
+                name: "image/[name].[ext]"
+            },
         }]
     },
     output: {
-        filename: '[name].bundle.js',
+        filename: 'scripts/[name].bundle.js',
         path: path.resolve(__dirname, '../dist')
     },
-    resolve: {  // 引入js、jsx文件时，无需添加后缀
-        extensions: ['.js', '.jsx'],        
+    resolve: { // 引入js、jsx文件时，无需添加后缀
+        extensions: ['.js', '.jsx'],
     },
     plugins: [
         !isDev && new MiniCssExtractPlugin({
@@ -66,11 +72,24 @@ const base = {
             filename: 'index.html',
             template: path.resolve(__dirname, '../public/index.html'),
             hash: true,
+            inject: true,
+            favicon: path.resolve(__dirname, '../public/favicon.ico'), // 添加小图标
             minify: !isDev && {
                 removeAttributeQuotes: true, // 去掉属性双引号
                 collapseWhitespace: true, // 将html文件折叠成一行
             }
-        })
+        }),
+        new UglifyJsPlugin({
+            uglifyOptions: {
+                compress: {
+                    drop_debugger: true, // console
+                    drop_console: true,
+                    pure_funcs: ['console.log'] // 移除console
+                }
+            },
+            parallel: true
+        }),
+        new webpack.HotModuleReplacementPlugin(),
     ].filter(Boolean)
 }
 
