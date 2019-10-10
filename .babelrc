@@ -1,0 +1,14 @@
+{
+    "presets": [
+        ["@babel/preset-env",{
+            "useBuiltIns": "usage",
+            "corejs": 2
+        }],
+        "@babel/preset-react"
+    ],
+    "plugins": [
+        ["@babel/plugin-proposal-decorators", {"legacy": true}], // 类装饰器
+        ["@babel/plugin-proposal-class-properties", {"loose": true}],  // class语法变成es5
+        "@babel/plugin-transform-runtime"
+    ]
+}

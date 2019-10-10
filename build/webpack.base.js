@@ -2,34 +2,41 @@ const path = require('path');
 const merge = require('webpack-merge');
 const dev = require('./webpack.dev');
 const prod = require('./webpack.prod');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-exports.module = () => {
-    const isDev = process.env.NODE_ENV === 'development'
-    const base = {
-        entry: path.resolve(__dirname, '../App.jsx'),
-        module: {
-            rules: [{
-                test: /\.jsx$/,
-            }, {
-                test: /\.js$/,
-            }, {
-                test: /\.html$/,
-            }, {
-                test: /\.(css|less|scss)$/,
-            }, {
-                test: /\.(jpe?g|png|gif|svg)$/,
-            }]
-        },
-        output: {
-            filename: 'bundle.js',
-            path: path.resolve(__dirname, '../dist')
-        },
-        plugins: {
+const isDev = process.env.NODE_ENV === 'development';
 
-        }
-    }
+let base = {
+    entry: path.resolve(__dirname, '../src/index.js'),
+    module: {
+        rules: [{
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
+                use: 'babel-loader'
+        }]
+    },
+    output: {
+        filename: 'bundle.js',
+        path: path.resolve(__dirname, '../dist')
+    },
+    resolve: {  // 引入js、jsx文件时，无需添加后缀
+        extensions: ['.js', '.jsx'],        
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            filename: 'index.html',
+            template: path.resolve(__dirname, '../public/index.html'),
+            hash: true,
+            minify: !isDev && {
+                removeAttributeQuotes: true, // 去掉属性双引号
+                collapseWhitespace: true, // 将html文件折叠成一行
+            }
+        })
+    ]
+}
 
-    if(isDev) {
+module.exports = () => {
+    if (isDev) {
         return merge(base, dev);
     } else {
         return merge(base, prod);
