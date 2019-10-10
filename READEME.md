@@ -23,8 +23,8 @@
 │  ├─ common                 // 共有方法
 │  ├─ compoents              // 自封装组件
 │  ├─ layouts                // 布局组件 
-│  └─ pages                  // 页面
-├─ App.jsx                   // 项目入口
+│  ├─ pages                  // 页面
+│  └─ App.jsx                // 项目入口
 ├─ .babelrc                  // babel配置文件
 ├─ .browerslistrc            // 配置浏览器的兼容性范围
 ├─ .gitignore                // 忽略上传文件
