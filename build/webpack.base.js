@@ -6,17 +6,20 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const isDev = process.env.NODE_ENV === 'development';
 
-let base = {
+const base = {
     entry: path.resolve(__dirname, '../src/index.js'),
     module: {
         rules: [{
-                test: /\.(js|jsx)$/,
-                exclude: /node_modules/,
-                use: 'babel-loader'
+            test: /\.(js|jsx)$/,
+            exclude: /node_modules/,
+            use: 'babel-loader'
+        }, {
+            test: /\.css$/,
+            use: ['style-loader', 'css-loader']
         }]
     },
     output: {
-        filename: 'bundle.js',
+        filename: 'js/[name].bundle.js',
         path: path.resolve(__dirname, '../dist')
     },
     resolve: {  // 引入js、jsx文件时，无需添加后缀
@@ -24,7 +27,7 @@ let base = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            filename: 'index.html',
+            filename: 'html/index.html',
             template: path.resolve(__dirname, '../public/index.html'),
             hash: true,
             minify: !isDev && {
