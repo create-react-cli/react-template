@@ -1,0 +1,22 @@
+body {
+    padding: 0;
+    margin: 0;
+    background: #000;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo {
+    display: block;
+    width: 500px;
+    height: 500px;
+}
+
+.text {
+    color: #fff;
+}
