@@ -19,15 +19,20 @@ const base = {
         }, {
             test: /\.css$/,
             use: [
-                !isDev && MiniCssExtractPlugin.loader, // 样式抽离
+                !isDev && MiniCssExtractPlugin.loader, // 生产环境下样式抽离
                 isDev && 'style-loader',
                 {
                     loader: 'css-loader',
                     options: {
-                        importLoaders: 1 // 引入的文件调用后面的loader处理
+                        importLoaders: 1              // 引入的文件调用后面的loader处理
                     }
                 },
-                "postcss-loader", // 样式前缀
+                {
+                    loader: "postcss-loader",
+                    options:{
+                        plugins:[require('autoprefixer')]
+                    }
+                },                                    // 智能添加样式前缀
             ].filter(Boolean)
         }, {
             test: /\.scss$/,
