@@ -14,10 +14,11 @@
 ### 目录
 ```
 ├─ build                     // webpack配置目录
-│  ├─ webpack.base.js        // webpack公有配置
+│  ├─ webpack.base.js        // webpack共有配置
 │  ├─ webpack.dev.js         // webpack开发环境配置
 │  └─ webpack.prod.js        // webpack生产环境配置
 ├─ public                    // 模板存放目录
+│  ├─ favicon.ico            // 网站图标
 │  └─ index.html             // 模板html文件
 ├─ src                       // 项目
 │  ├─ common                 // 共有方法
@@ -25,13 +26,14 @@
 │  ├─ layouts                // 布局组件 
 │  ├─ pages                  // 页面
 │  ├─ index.js               // 项目入口
+│  ├─ App.css                // css样式
+│  ├─ logo.svg               // 项目入口
 │  └─ App.jsx                
 ├─ .babelrc                  // babel配置文件
 ├─ .browerslistrc            // 配置浏览器的兼容性范围
 ├─ .gitignore                // 忽略上传文件
-├─ postcss.config.js         // 处理css样式前缀
 ├─ package.json              
-├─ README.md                 // 工程搭建文档
+├─ README.md                 // 工程搭建文档说明
 ```
 
 ### 初始化
@@ -46,15 +48,19 @@
 
 ```
 "scripts": {
-    "start": "webpack-dev-server --env.development --config ./build/webpack.base.js", // 启动服务
-    "build": "webpack --env.production --config ./build/webpack.base.js" // 打包代码
+    "start": "webpack-dev-server --env.development --config ./build/webpack.base.js",      // 开发环境启动服务,
+    "dev":"webpack --env.development --config ./build/webpack.base.js",                    // 开发环境打包代码
+    "build": "webpack --env.production --config ./build/webpack.base.js",                  // 生产环境打包代码
+    "build:server": "webpack-dev-server --env.production --config ./build/webpack.base.js" // 生产环境启动服务
   },
 ```
 这样，我们完成了基础的配置，但是，我们会思考：不同的平台（Mac和Windows）是不是会出现设置环境变量不一样的问题？基于这个问题，我们找到了cross-env插件，那我们应该如何将上面配置好的scripts改进呢？
 ```
 "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --config ./build/webpack.base.js",
-    "build": "cross-env NODE_ENV=production webpack --config ./build/webpack.base.js"
+    "dev":"cross-env NODE_ENV=development webpack --config ./build/webpack.base.js",
+    "build": "cross-env NODE_ENV=production webpack --config ./build/webpack.base.js",
+    "build:server": "cross-env NODE_ENV=production webpack-dev-server --config ./build/webpack.base.js"
   },
 ```
 配置好以后，下一步，我们就开始配置webpack
