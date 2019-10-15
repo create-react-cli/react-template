@@ -3,8 +3,10 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const dev = require('./webpack.dev');
 const prod = require('./webpack.prod');
+const glob = require('glob');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const PurgecssWebpackPlugin= require('purgecss-webpack-plugin');
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -71,6 +73,10 @@ const base = {
     plugins: [
         !isDev && new MiniCssExtractPlugin({               // css样式抽离
             filename: 'css/[name].[contentHash].css'
+        }),
+        !isDev && new PurgecssWebpackPlugin({
+            paths: glob.sync(`${path.join(__dirname, "../src")}/**/*`, {nodir: true})
+                                                           // 不匹配目录，只匹配文件
         }),
         new HtmlWebpackPlugin({                            // 配置入口html
             filename: 'index.html',
