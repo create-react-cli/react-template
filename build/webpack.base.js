@@ -70,7 +70,7 @@ const base = {
     },
     plugins: [
         !isDev && new MiniCssExtractPlugin({               // css样式抽离
-            filename: 'css/[name].[contentHash].[ext]'
+            filename: 'css/[name].[contentHash].css'
         }),
         new HtmlWebpackPlugin({                            // 配置入口html
             filename: 'index.html',

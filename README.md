@@ -17,6 +17,8 @@
 │  ├─ webpack.base.js        // webpack共有配置
 │  ├─ webpack.dev.js         // webpack开发环境配置
 │  └─ webpack.prod.js        // webpack生产环境配置
+├─ nginx-conf                
+│  └─ nginx.conf             // nginx配置文件
 ├─ public                    // 模板存放目录
 │  ├─ favicon.ico            // 网站图标
 │  └─ index.html             // 模板html文件

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --config ./build/webpack.base.js",
-    "dev":"cross-env NODE_ENV=development webpack --config ./build/webpack.base.js",
+    "dev": "cross-env NODE_ENV=development webpack --config ./build/webpack.base.js",
     "build": "cross-env NODE_ENV=production webpack --config ./build/webpack.base.js",
     "build:server": "cross-env NODE_ENV=production webpack-dev-server --config ./build/webpack.base.js"
   },
@@ -30,7 +30,6 @@
     "autoprefixer": "^9.6.4",
     "babel-loader": "^8.0.6",
     "clean-webpack-plugin": "^3.0.0",
-    "copy-webpack-plugin": "^5.0.4",
     "core-js": "^3.2.1",
     "cross-env": "^6.0.3",
     "css-loader": "^3.2.0",
@@ -44,8 +43,6 @@
     "postcss-loader": "^3.0.0",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
-    "react-loader": "^2.4.5",
-    "react-proxy-loader": "^0.3.5",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
     "stylus": "^0.54.7",
@@ -55,6 +52,5 @@
     "webpack": "^4.41.0",
     "webpack-cli": "^3.3.9",
     "webpack-merge": "^4.2.2"
-  },
-  "dependencies": {}
+  }
 }
