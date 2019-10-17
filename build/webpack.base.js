@@ -7,6 +7,7 @@ const glob = require('glob');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const PurgecssWebpackPlugin = require('purgecss-webpack-plugin');
+const AddAssetHtmlCdnWebpackPlugin= require('add-asset-html-cdn-webpack-plugin');
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -97,6 +98,9 @@ const base = {
     resolve: { // 引入js、jsx文件时，无需添加后缀
         extensions: ['.js', '.jsx'],
     },
+    externals:{
+        'jquery':'$'
+    },
     plugins: [
         !isDev && new MiniCssExtractPlugin({ // css样式抽离
             filename: 'css/[name].[contentHash].css'
@@ -119,6 +123,9 @@ const base = {
             }
         }),
         new webpack.HotModuleReplacementPlugin(),
+        new AddAssetHtmlCdnWebpackPlugin(true, {
+            'jquery': 'https://cdn.bootcss.com/jquery/3.4.1/jquery.js'
+        })
     ].filter(Boolean),
     devServer: { // 配置服务
         hot: true, // 热更新

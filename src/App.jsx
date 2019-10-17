@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
+import $ from 'jquery';
 import './App.css'
 
 export default class App extends Component {
+    componentDidMount() {
+        console.log($);
+    }
     render() {
         return (
             <div className="app">
