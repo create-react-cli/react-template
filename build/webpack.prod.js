@@ -2,6 +2,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const optimizeCssAssetsWebpackPlugin= require('optimize-css-assets-webpack-plugin');
 const TerserWebpackPlugin= require('terser-webpack-plugin');
+const { BundleAnalyzerPlugin }= require('webpack-bundle-analyzer');
 
 module.exports = {
     mode: 'production',
@@ -23,5 +24,6 @@ module.exports = {
             },
             parallel: true
         }),
+        new BundleAnalyzerPlugin(),
     ],
 }

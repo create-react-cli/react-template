@@ -96,7 +96,7 @@ const base = {
     output: { // 出口
         filename: 'scripts/[name].bundle.js',
         path: path.resolve(__dirname, '../dist'),
-        chunkFilename: path.resolve(__dirname, '../dist/scripts/[name].min.js')
+        chunkFilename: '[name].min.js'
     },
     resolve: { // 引入js、jsx文件时，无需添加后缀
         extensions: ['.js', '.jsx'],
@@ -134,7 +134,7 @@ const base = {
         }),
         new AddAssetHtmlWebpackPlugin({  // 手动引入react.dll.js
             filepath: path.resolve(__dirname, '../dll/react.dll.js')
-        })
+        }),
     ].filter(Boolean),
     devServer: { // 配置服务
         hot: true, // 热更新
