@@ -8,6 +8,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const PurgecssWebpackPlugin = require('purgecss-webpack-plugin');
 const AddAssetHtmlCdnWebpackPlugin = require('add-asset-html-cdn-webpack-plugin');
+const { DllReferencePlugin } = require("webpack");
+const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin');
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -125,6 +127,12 @@ const base = {
         new webpack.HotModuleReplacementPlugin(),
         new AddAssetHtmlCdnWebpackPlugin(true, {
             'jquery': 'https://cdn.bootcss.com/jquery/3.4.1/jquery.js'
+        }),
+        new DllReferencePlugin({      // 构建时引用动态链接库
+            manifest: path.resolve(__dirname, '../dll/manifest.json')
+        }),
+        new AddAssetHtmlWebpackPlugin({  // 手动引入react.dll.js
+            filepath: path.resolve(__dirname, '../dll/react.dll.js')
         })
     ].filter(Boolean),
     devServer: { // 配置服务
