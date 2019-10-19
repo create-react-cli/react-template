@@ -6,7 +6,7 @@ export default class App extends Component {
     handleClick = () => {
         // 这样写可以将引入的文件名称变为 index.min.js
         import(/* webpackChunkName: "index" */ './common/index').then(res => {
-            console.log(res.test());
+            console.log(res);
         })
     }
     render() {

@@ -10,6 +10,7 @@ const PurgecssWebpackPlugin = require('purgecss-webpack-plugin');
 const AddAssetHtmlCdnWebpackPlugin = require('add-asset-html-cdn-webpack-plugin');
 const { DllReferencePlugin } = require("webpack");
 const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin');
+const HappyPack = require('happypack');
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -18,40 +19,19 @@ const base = {
     module: {
         rules: [{ // 对.js、.jsx的处理
             test: /\.(js|jsx)$/,
-            exclude: /node_modules/,
-            use: 'babel-loader'
+            use: 'happypack/loader?id=js',
         }, { // 对.css的处理
             test: /\.css$/,
-            use: [
-                !isDev && MiniCssExtractPlugin.loader, // 生产环境下样式抽离
-                isDev && 'style-loader',
-                {
-                    loader: 'css-loader',
-                    options: {
-                        importLoaders: 1 // 引入的文件调用后面的loader处理
-                    }
-                },
-                { // 智能添加样式前缀
-                    loader: "postcss-loader",
-                    options: {
-                        plugins: [require('autoprefixer')]
-                    }
-                },
-            ].filter(Boolean)
+            use: 'happypack/loader?id=css',
         }, {
             test: /\.scss$/, // css预处理器scss的处理
-            use: [
-                !isDev && MiniCssExtractPlugin.loader, // 生产环境下抽离样式
-                isDev && 'style-loader',
-                "css-loader",
-                "sass-loader"
-            ].filter(Boolean)
+            use: 'happypack/loader?id=scss',
         }, {
             test: /\.less$/, // css预处理器less的处理
-            use: "less-loader",
+            use: 'happypack/loader?id=less',
         }, {
-            test: /\.stylus$/, // css预处理器stylus的处理                           
-            use: "stylus-loader",
+            test: /\.stylus$/, // css预处理器stylus的处理 
+            use: 'happypack/loader?id=stylus',
         }, {
             test: /\.(jpe?g|png|svg|gif)$/, // 对图片的处理
             use: [{
@@ -136,6 +116,56 @@ const base = {
             filepath: path.resolve(__dirname, '../dll/react.dll.js')
         }),
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),  // 忽略import、require语法
+        new webpack.LoaderOptionsPlugin({
+            options: {
+                noParse: /jquery/,   // 对类似jq这类依赖库，内部不会引用其他库，我们在打包的时候就没有必要去解析，这样能够增加打包速率  
+            }
+        }),
+        new HappyPack({
+            id: 'js',
+            threads: 4,
+            loaders: ['babel-loader']
+        }),
+        new HappyPack({
+            id: 'css',
+            threads: 4,
+            loaders: [
+                !isDev && MiniCssExtractPlugin.loader, // 生产环境下样式抽离
+                isDev && 'style-loader',
+                {
+                    loader: 'css-loader',
+                    options: {
+                        importLoaders: 1 // 引入的文件调用后面的loader处理
+                    }
+                },
+                { // 智能添加样式前缀
+                    loader: "postcss-loader",
+                    options: {
+                        plugins: [require('autoprefixer')]
+                    }
+                },
+            ].filter(Boolean)
+        }),
+        new HappyPack({
+            id: 'scss',
+            threads: 4,
+            loaders: [
+                !isDev && MiniCssExtractPlugin.loader, // 生产环境下抽离样式
+                isDev && 'style-loader',
+                "css-loader",
+                "sass-loader"
+            ].filter(Boolean)
+        }),
+        new HappyPack({
+            id: 'less',
+            threads: 4,
+            loaders: ["less-loader"]
+        }),
+        new HappyPack({
+            id: 'status',
+            threads: 4,
+            loaders: ["stylus-loader"]
+        })
     ].filter(Boolean),
     devServer: { // 配置服务
         hot: true, // 热更新
@@ -144,7 +174,6 @@ const base = {
         open: true, // 启动服务后自动启动浏览器
         contentBase: path.resolve(__dirname, '../dist'), // webpack启动服务会在dist目录下
     },
-    noParse: /jquery/,   // 对类似jq这类依赖库，内部不会引用其他库，我们在打包的时候就没有必要去解析，这样能够增加打包速率  
 }
 
 module.exports = () => { // 根据环境合并webpack
