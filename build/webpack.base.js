@@ -7,7 +7,7 @@ const glob = require('glob');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const PurgecssWebpackPlugin = require('purgecss-webpack-plugin');
-const AddAssetHtmlCdnWebpackPlugin= require('add-asset-html-cdn-webpack-plugin');
+const AddAssetHtmlCdnWebpackPlugin = require('add-asset-html-cdn-webpack-plugin');
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -56,7 +56,7 @@ const base = {
                     loader: "file-loader",
                     options: {
                         name: "image/[contentHash].[ext]",
-                        limit:50000,                         // 大于50kb的是路径，小于50kb的图片转为base64
+                        limit: 50000, // 大于50kb的是路径，小于50kb的图片转为base64
                     },
                 },
                 !isDev && {
@@ -98,8 +98,8 @@ const base = {
     resolve: { // 引入js、jsx文件时，无需添加后缀
         extensions: ['.js', '.jsx'],
     },
-    externals:{
-        'jquery':'$'
+    externals: {
+        'jquery': '$'
     },
     plugins: [
         !isDev && new MiniCssExtractPlugin({ // css样式抽离

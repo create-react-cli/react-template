@@ -7,8 +7,8 @@ module.exports = {
     mode: 'production',
     optimization: {                                        // 压缩方案
         minimizer: [
-            new TerserWebpackPlugin(),
             new optimizeCssAssetsWebpackPlugin(),
+            new TerserWebpackPlugin(),
         ]
     },
     plugins: [
@@ -17,8 +17,8 @@ module.exports = {
             uglifyOptions: {
                 compress: {
                     drop_debugger: true,               
-                    drop_console: true,
-                    pure_funcs: ['console.log', 'debugger']
+                    // drop_console: true,
+                    pure_funcs: ['debugger']
                 }
             },
             parallel: true
