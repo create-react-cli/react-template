@@ -125,7 +125,7 @@ const base = {
                 collapseWhitespace: true, // 将html文件折叠成一行
             }
         }),
-        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NamedModulesPlugin(),   // 热更新
         new AddAssetHtmlCdnWebpackPlugin(true, {
             'jquery': 'https://cdn.bootcss.com/jquery/3.4.1/jquery.js'
         }),
@@ -135,6 +135,7 @@ const base = {
         new AddAssetHtmlWebpackPlugin({  // 手动引入react.dll.js
             filepath: path.resolve(__dirname, '../dll/react.dll.js')
         }),
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),  // 忽略import、require语法
     ].filter(Boolean),
     devServer: { // 配置服务
         hot: true, // 热更新
@@ -142,7 +143,8 @@ const base = {
         compress: true, // 提升页面返回速度
         open: true, // 启动服务后自动启动浏览器
         contentBase: path.resolve(__dirname, '../dist'), // webpack启动服务会在dist目录下
-    }
+    },
+    noParse: /jquery/,   // 对类似jq这类依赖库，内部不会引用其他库，我们在打包的时候就没有必要去解析，这样能够增加打包速率  
 }
 
 module.exports = () => { // 根据环境合并webpack
