@@ -98,8 +98,8 @@ const base = {
         path: path.resolve(__dirname, '../dist'),
         chunkFilename: '[name].min.js'
     },
-    resolve: { // 引入js、jsx文件时，无需添加后缀
-        extensions: ['.js', '.jsx'],
+    resolve: { // 引入js、jsx、json、css文件时，无需添加后缀
+        extensions: ['.js', '.jsx', '.json', '.css'],
     },
     externals: {
         'jquery': '$'
