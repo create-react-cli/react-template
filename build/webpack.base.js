@@ -95,7 +95,8 @@ const base = {
     },
     output: { // 出口
         filename: 'scripts/[name].bundle.js',
-        path: path.resolve(__dirname, '../dist')
+        path: path.resolve(__dirname, '../dist'),
+        chunkFilename: path.resolve(__dirname, '../dist/scripts/[name].min.js')
     },
     resolve: { // 引入js、jsx文件时，无需添加后缀
         extensions: ['.js', '.jsx'],
