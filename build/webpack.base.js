@@ -141,7 +141,17 @@ const base = {
                 { // 智能添加样式前缀
                     loader: "postcss-loader",
                     options: {
-                        plugins: [require('autoprefixer')]
+                        plugins: [
+                            require('autoprefixer')({
+                            browsers: [
+                              '>95%',
+                              'last 4 versions',
+                              'Firefox ESR',
+                              'not ie < 9', // React doesn't support IE8 anyway
+                            ],
+                            flexbox: 'no-2009',
+                          })
+                        ]
                     }
                 },
             ].filter(Boolean)
