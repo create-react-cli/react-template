@@ -5,7 +5,7 @@ const NODE_ENV = process.env.NODE_ENV;
 
 module.exports = {
     mode: NODE_ENV,
-    entry: ["react", "react-dom"],
+    entry: ["react", "react-dom", "react-router"],
     output: {
         library: 'react',
         filename: 'react.dll.js',

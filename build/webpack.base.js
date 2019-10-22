@@ -76,7 +76,8 @@ const base = {
     output: { // 出口
         filename: 'scripts/[name].bundle.js',
         path: path.resolve(__dirname, '../dist'),
-        chunkFilename: '[name].min.js'
+        chunkFilename: '[name].min.js',
+        publicPath: '/'
     },
     resolve: { // 引入js、jsx、json、css文件时，无需添加后缀
         extensions: ['.js', '.jsx', '.json', '.css'],
@@ -134,26 +135,16 @@ const base = {
                 isDev && 'style-loader',
                 {
                     loader: 'css-loader',
-                    options: {
-                        importLoaders: 1 // 引入的文件调用后面的loader处理
-                    }
+                    // options: {
+                    //     importLoaders: 1 // 引入的文件调用后面的loader处理
+                    // }
                 },
-                { // 智能添加样式前缀
-                    loader: "postcss-loader",
-                    options: {
-                        plugins: [
-                            require('autoprefixer')({
-                            browsers: [
-                              '>95%',
-                              'last 4 versions',
-                              'Firefox ESR',
-                              'not ie < 9', // React doesn't support IE8 anyway
-                            ],
-                            flexbox: 'no-2009',
-                          })
-                        ]
-                    }
-                },
+                // { // 智能添加样式前缀
+                //     loader: "postcss-loader",
+                //     options: {
+                //         plugins: [require('autoprefixer')]
+                //     }
+                // },
             ].filter(Boolean)
         }),
         new HappyPack({
@@ -180,6 +171,7 @@ const base = {
     devServer: { // 配置服务
         hot: true, // 热更新
         port: 3000, // 端口号
+        historyApiFallback: true,
         compress: true, // 提升页面返回速度
         open: true, // 启动服务后自动启动浏览器
         contentBase: path.resolve(__dirname, '../dist'), // webpack启动服务会在dist目录下

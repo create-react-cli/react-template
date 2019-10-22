@@ -1,6 +1,11 @@
-export const routes = [
+import Home from '../pages/Home/Home';
+
+const routes = [
     {
-        path: '/',
+        path: 'home',
         component: Home
     }
 ]
+
+
+export default routes;
