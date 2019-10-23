@@ -1,11 +1,10 @@
 import axios from 'axios';
 import { toLogin } from '../../common/index';
 import { handleError } from './handleError';
-import baseURL from '../../common/baseURL';
 
 // 创建axios请求实例
 axios.create({
-    baseURL: `${baseURL}/api/`,
+    baseURL: '/api',
     timeout: 1000,
     headers: {'X-Custom-Header': 'foobar'}
 })

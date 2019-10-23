@@ -10,9 +10,8 @@ export default class extends Component {
     render() {
         return (
             <Router history={history}>
-                <div>
+                <div style={{height: '100%'}}>
                     <Route path='/' exact component={Home} />
-                    {/* <Route path='/home' component={Home} /> */}
                     {
                         routes.map(item => {
                             return (
