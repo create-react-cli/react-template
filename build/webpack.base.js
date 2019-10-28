@@ -106,7 +106,8 @@ const base = {
                 collapseWhitespace: true, // 将html文件折叠成一行
             }
         }),
-        new webpack.NamedModulesPlugin(),   // 热更新
+        // new webpack.NamedModulesPlugin(),   // 打印更新模块
+        new webpack.HotModuleReplacementPlugin(),  // 热更新插件
         new AddAssetHtmlCdnWebpackPlugin(true, {
             'jquery': 'https://cdn.bootcss.com/jquery/3.4.1/jquery.js'
         }),
