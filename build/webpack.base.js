@@ -8,7 +8,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const PurgecssWebpackPlugin = require('purgecss-webpack-plugin');
 const AddAssetHtmlCdnWebpackPlugin = require('add-asset-html-cdn-webpack-plugin');
-const { DllReferencePlugin } = require("webpack");
+const {
+    DllReferencePlugin
+} = require("webpack");
 const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin');
 const HappyPack = require('happypack');
 
@@ -107,20 +109,20 @@ const base = {
             }
         }),
         // new webpack.NamedModulesPlugin(),   // 打印更新模块
-        new webpack.HotModuleReplacementPlugin(),  // 热更新插件
+        new webpack.HotModuleReplacementPlugin(), // 热更新插件
         new AddAssetHtmlCdnWebpackPlugin(true, {
             'jquery': 'https://cdn.bootcss.com/jquery/3.4.1/jquery.js'
         }),
-        new DllReferencePlugin({      // 构建时引用动态链接库
+        new DllReferencePlugin({ // 构建时引用动态链接库
             manifest: path.resolve(__dirname, '../dll/manifest.json')
         }),
-        new AddAssetHtmlWebpackPlugin({  // 手动引入react.dll.js
+        new AddAssetHtmlWebpackPlugin({ // 手动引入react.dll.js
             filepath: path.resolve(__dirname, '../dll/react.dll.js')
         }),
-        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),  // 忽略import、require语法
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/), // 忽略import、require语法
         new webpack.LoaderOptionsPlugin({
             options: {
-                noParse: /jquery/,   // 对类似jq这类依赖库，内部不会引用其他库，我们在打包的时候就没有必要去解析，这样能够增加打包速率  
+                noParse: /jquery/, // 对类似jq这类依赖库，内部不会引用其他库，我们在打包的时候就没有必要去解析，这样能够增加打包速率  
             }
         }),
         new HappyPack({
@@ -169,6 +171,7 @@ const base = {
             loaders: ["stylus-loader"]
         })
     ].filter(Boolean),
+
     devServer: { // 配置服务
         hot: true, // 热更新
         port: 3000, // 端口号
@@ -176,7 +179,18 @@ const base = {
         compress: true, // 提升页面返回速度
         open: true, // 启动服务后自动启动浏览器
         contentBase: path.resolve(__dirname, '../dist'), // webpack启动服务会在dist目录下
-    },
+        proxy: {
+            '/api': {
+                target: 'https://suggest.taobao.com/',
+                pathRewrite: {
+                    "^/api": ""
+                },
+                changeOrigin: true,
+                secure: false, // 是否验证证书
+            }
+        },
+
+    }
 }
 
 module.exports = () => { // 根据环境合并webpack
