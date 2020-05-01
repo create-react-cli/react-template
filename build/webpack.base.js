@@ -138,16 +138,16 @@ const base = {
                 isDev && 'style-loader',
                 {
                     loader: 'css-loader',
-                    // options: {
-                    //     importLoaders: 1 // 引入的文件调用后面的loader处理
-                    // }
+                    options: {
+                        importLoaders: 1 // 引入的文件调用后面的loader处理
+                    }
                 },
-                // { // 智能添加样式前缀
-                //     loader: "postcss-loader",
-                //     options: {
-                //         plugins: [require('autoprefixer')]
-                //     }
-                // },
+                { // 智能添加样式前缀
+                    loader: "postcss-loader",
+                    options: {
+                        plugins: [require('autoprefixer')]
+                    }
+                },
             ].filter(Boolean)
         }),
         new HappyPack({
@@ -180,13 +180,13 @@ const base = {
         open: true, // 启动服务后自动启动浏览器
         contentBase: path.resolve(__dirname, '../dist'), // webpack启动服务会在dist目录下
         proxy: {
-            '/api': {
-                target: 'https://suggest.taobao.com/',
+            '^/api': {
+                target: 'http://www.baidu.com',
                 pathRewrite: {
                     "^/api": ""
                 },
                 changeOrigin: true,
-                secure: false, // 是否验证证书
+                secure: true, // 是否验证证书  true为https
             }
         },
 

@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import jsonp from 'jsonp';
-import $ from 'jquery';
+import promiseAjax from "../../utils/axios";
 
 export default class Home extends Component {
     getData = () => {
-        axios.get('/sug?q=11')
-            .then(res => {
-                console.log(res);
-            })
+        promiseAjax
     }
     render() {
         return (
